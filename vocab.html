@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>词汇本 · Vocabulary</title>
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="index.html">
+        <span class="brand-title">英语学伴</span>
+        <span class="brand-sub">两人一起学英语</span>
+      </a>
+      <ul class="nav">
+        <li><a href="index.html" data-page="index.html">首页</a></li>
+        <li><a href="vocab.html" data-page="vocab.html">词汇本</a></li>
+        <li><a href="goals.html" data-page="goals.html">目标打卡</a></li>
+        <li><a href="writing.html" data-page="writing.html">作文互改</a></li>
+        <li><a href="speaking.html" data-page="speaking.html">口语话题</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main>
+    <h1 class="page-title">词汇本 · Vocabulary</h1>
+    <p class="page-lead">共同维护的单词表。新增词条请编辑 <code>data/vocab.json</code> 后提交。</p>
+
+    <div class="note">
+      如何添加：在 <code>data/vocab.json</code> 数组末尾追加一项，字段为
+      <code>word</code> / <code>meaning</code> / <code>example</code> /
+      <code>addedBy</code>（A 或 B）/ <code>date</code>（ISO，如 2026-10-28），然后 commit / PR。
+    </div>
+
+    <div id="vocab-root">
+      <p class="muted">加载中…</p>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    English Study Buddy · 静态站骨架 · 用 GitHub Pages 托管
+  </footer>
+
+  <script src="assets/app.js"></script>
+  <script>
+    (async () => {
+      const root = document.getElementById("vocab-root");
+      try {
+        const [config, words] = await Promise.all([
+          loadConfig(),
+          loadJSON("data/vocab.json"),
+        ]);
+        const sorted = [...words].sort((a, b) =>
+          (b.date || "").localeCompare(a.date || "")
+        );
+        root.innerHTML = `
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>单词 Word</th>
+                  <th>释义 Meaning</th>
+                  <th>例句 Example</th>
+                  <th>添加人</th>
+                  <th>日期</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${sorted
+                  .map(
+                    (w) => `
+                  <tr>
+                    <td class="word-cell">${escapeHtml(w.word)}</td>
+                    <td>${escapeHtml(w.meaning)}</td>
+                    <td>${escapeHtml(w.example)}</td>
+                    <td>${escapeHtml(partnerName(config, w.addedBy))}</td>
+                    <td>${escapeHtml(formatDate(w.date))}</td>
+                  </tr>`
+                  )
+                  .join("")}
+              </tbody>
+            </table>
+          </div>
+          <p class="muted" style="margin-top:0.75rem;">共 ${sorted.length} 个词</p>`;
+      } catch (err) {
+        showFetchError(root, err);
+      }
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>英语学伴 · English Study Buddy</title>
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="index.html">
+        <span class="brand-title" id="brand-title">英语学伴</span>
+        <span class="brand-sub" id="brand-sub">两人一起学英语</span>
+      </a>
+      <ul class="nav">
+        <li><a href="index.html" data-page="index.html">首页</a></li>
+        <li><a href="vocab.html" data-page="vocab.html">词汇本</a></li>
+        <li><a href="goals.html" data-page="goals.html">目标打卡</a></li>
+        <li><a href="writing.html" data-page="writing.html">作文互改</a></li>
+        <li><a href="speaking.html" data-page="speaking.html">口语话题</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main>
+    <h1 class="page-title" id="page-title">英语学伴</h1>
+    <p class="page-lead">两人共用的静态学习站：改仓库里的 JSON / HTML，GitHub Pages 自动展示。</p>
+
+    <div class="goal-banner">
+      <h2>本周共同目标 · This week</h2>
+      <p id="week-goal">加载中…</p>
+    </div>
+
+    <h2 style="font-size:1.1rem;margin:0 0 0.75rem;">学伴 · Partners</h2>
+    <div class="card-grid" id="partners"></div>
+
+    <div class="quick-links">
+      <a class="quick-link" href="vocab.html">
+        <strong>词汇本</strong>
+        <span>Word list · 一起记单词</span>
+      </a>
+      <a class="quick-link" href="goals.html">
+        <strong>目标打卡</strong>
+        <span>Weekly goals & check-ins</span>
+      </a>
+      <a class="quick-link" href="writing.html">
+        <strong>作文互改</strong>
+        <span>Peer review writing</span>
+      </a>
+      <a class="quick-link" href="speaking.html">
+        <strong>口语话题</strong>
+        <span>Conversation prompts</span>
+      </a>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    English Study Buddy · 静态站骨架 · 用 GitHub Pages 托管
+  </footer>
+
+  <script src="assets/app.js"></script>
+  <script>
+    (async () => {
+      try {
+        const config = await loadConfig();
+        document.getElementById("brand-title").textContent =
+          config.siteTitleZh || config.siteTitle;
+        document.getElementById("brand-sub").textContent = config.tagline || "";
+        document.getElementById("page-title").textContent =
+          (config.siteTitleZh || "") +
+          (config.siteTitle ? " · " + config.siteTitle : "");
+        document.title =
+          (config.siteTitleZh || "英语学伴") +
+          " · " +
+          (config.siteTitle || "English Study Buddy");
+        document.getElementById("week-goal").textContent =
+          config.weekGoal || "（在 config.json 里填写本周目标）";
+
+        const box = document.getElementById("partners");
+        box.innerHTML = (config.partners || [])
+          .map(
+            (p) => `
+          <article class="card">
+            <span class="partner-badge">${escapeHtml(p.nameZh || p.name || p.id)}</span>
+            <h3>${escapeHtml(p.name || "Partner " + p.id)}</h3>
+            <p>${escapeHtml(p.bio || "")}</p>
+            <p class="meta">${escapeHtml(p.bioEn || "")}</p>
+          </article>`
+          )
+          .join("");
+      } catch (err) {
+        showFetchError(document.querySelector("main"), err);
+      }
+    })();
+  </script>
+</body>
+</html>

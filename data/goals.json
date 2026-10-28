@@ -1,0 +1,16 @@
+{
+  "weekOf": "2026-10-27",
+  "shared": "完成 20 个新词 + 1 篇短文互改 + 2 次口语练习",
+  "partners": {
+    "A": [
+      { "id": "a1", "text": "背 10 个新词并造句", "done": true },
+      { "id": "a2", "text": "写一篇 150 词日记", "done": false },
+      { "id": "a3", "text": "跟学伴练 15 分钟口语", "done": false }
+    ],
+    "B": [
+      { "id": "b1", "text": "背 10 个新词并造句", "done": true },
+      { "id": "b2", "text": "听一篇 TED 并做笔记", "done": true },
+      { "id": "b3", "text": "给学伴作文写反馈", "done": false }
+    ]
+  }
+}

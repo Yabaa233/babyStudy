@@ -1,0 +1,50 @@
+[
+  {
+    "id": "s1",
+    "title": "Weekend plans",
+    "titleZh": "周末计划",
+    "level": "A2–B1",
+    "prompts": [
+      "What did you do last weekend?",
+      "What are your plans for this weekend?",
+      "If you had a free Saturday, how would you spend it?"
+    ],
+    "tips": "试着用过去时和将来时（going to / will）。"
+  },
+  {
+    "id": "s2",
+    "title": "Food & cooking",
+    "titleZh": "食物与烹饪",
+    "level": "A2–B1",
+    "prompts": [
+      "What's your favorite dish and why?",
+      "Can you describe how to make a simple meal?",
+      "Have you ever tried cooking something new?"
+    ],
+    "tips": "练习描述步骤：first, then, after that, finally。"
+  },
+  {
+    "id": "s3",
+    "title": "Learning English together",
+    "titleZh": "一起学英语",
+    "level": "B1",
+    "prompts": [
+      "What study habits work best for you?",
+      "Which skill is hardest right now — speaking, writing, or listening?",
+      "How can we help each other stay consistent this month?"
+    ],
+    "tips": "多用 I find it hard to… / One thing that helps me is…"
+  },
+  {
+    "id": "s4",
+    "title": "Travel dreams",
+    "titleZh": "旅行梦想",
+    "level": "B1–B2",
+    "prompts": [
+      "If you could visit any city next year, where would you go?",
+      "What's more important on a trip: food, people, or scenery?",
+      "Tell a short story about a memorable trip (real or imagined)."
+    ],
+    "tips": "练习条件句：If I could… / I would…"
+  }
+]

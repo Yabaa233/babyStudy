@@ -1,0 +1,26 @@
+[
+  {
+    "id": "w1",
+    "title": "My Study Routine",
+    "author": "A",
+    "date": "2026-10-22",
+    "status": "已互改",
+    "file": "my-study-routine.html"
+  },
+  {
+    "id": "w2",
+    "title": "A Rainy Afternoon",
+    "author": "B",
+    "date": "2026-10-25",
+    "status": "待互改",
+    "file": "a-rainy-afternoon.html"
+  },
+  {
+    "id": "w3",
+    "title": "Why I Want to Improve My English",
+    "author": "A",
+    "date": "2026-10-27",
+    "status": "待互改",
+    "file": "why-improve-english.html"
+  }
+]

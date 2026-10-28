@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>作文互改 · Writing</title>
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="index.html">
+        <span class="brand-title">英语学伴</span>
+        <span class="brand-sub">两人一起学英语</span>
+      </a>
+      <ul class="nav">
+        <li><a href="index.html" data-page="index.html">首页</a></li>
+        <li><a href="vocab.html" data-page="vocab.html">词汇本</a></li>
+        <li><a href="goals.html" data-page="goals.html">目标打卡</a></li>
+        <li><a href="writing.html" data-page="writing.html">作文互改</a></li>
+        <li><a href="speaking.html" data-page="speaking.html">口语话题</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main>
+    <h1 class="page-title">作文互改 · Writing Peer Review</h1>
+    <p class="page-lead">目录在 <code>writing/index.json</code>；正文放在 <code>writing/</code> 下的 HTML 文件。</p>
+
+    <div class="note">
+      新增作文：1）在 <code>writing/</code> 新建例如 <code>my-piece.html</code>；
+      2）在 <code>writing/index.json</code> 增加一条，
+      <code>status</code> 用「待互改」或「已互改」。学伴改完后把 status 改成「已互改」，并在正文页的 Feedback 区留言。
+    </div>
+
+    <div id="writing-root">
+      <p class="muted">加载中…</p>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    English Study Buddy · 静态站骨架 · 用 GitHub Pages 托管
+  </footer>
+
+  <script src="assets/app.js"></script>
+  <script>
+    (async () => {
+      const root = document.getElementById("writing-root");
+      try {
+        const [config, catalog] = await Promise.all([
+          loadConfig(),
+          loadJSON("writing/index.json"),
+        ]);
+        const sorted = [...catalog].sort((a, b) =>
+          (b.date || "").localeCompare(a.date || "")
+        );
+        root.innerHTML = `<div class="item-list">${sorted
+          .map((w) => {
+            const done = w.status === "已互改";
+            return `
+            <article class="item">
+              <div class="item-header">
+                <h3><a href="writing/${escapeHtml(w.file)}">${escapeHtml(
+              w.title
+            )}</a></h3>
+                <span class="badge ${done ? "badge-ok" : "badge-warn"}">${escapeHtml(
+              w.status || "待互改"
+            )}</span>
+              </div>
+              <p class="muted" style="margin:0;font-size:0.9rem;">
+                ${escapeHtml(partnerName(config, w.author))} · ${escapeHtml(
+              formatDate(w.date)
+            )}
+              </p>
+            </article>`;
+          })
+          .join("")}</div>`;
+      } catch (err) {
+        showFetchError(root, err);
+      }
+    })();
+  </script>
+</body>
+</html>

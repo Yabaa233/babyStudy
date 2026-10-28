@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>口语话题 · Speaking</title>
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="index.html">
+        <span class="brand-title">英语学伴</span>
+        <span class="brand-sub">两人一起学英语</span>
+      </a>
+      <ul class="nav">
+        <li><a href="index.html" data-page="index.html">首页</a></li>
+        <li><a href="vocab.html" data-page="vocab.html">词汇本</a></li>
+        <li><a href="goals.html" data-page="goals.html">目标打卡</a></li>
+        <li><a href="writing.html" data-page="writing.html">作文互改</a></li>
+        <li><a href="speaking.html" data-page="speaking.html">口语话题</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main>
+    <h1 class="page-title">口语话题 · Speaking Topics</h1>
+    <p class="page-lead">对话提示来自 <code>data/speaking.json</code>。两人语音/视频时打开本页即可。</p>
+
+    <div class="note">
+      添加话题：在 <code>data/speaking.json</code> 追加对象，包含
+      <code>id</code>、<code>title</code>、<code>titleZh</code>、<code>level</code>、
+      <code>prompts</code>（字符串数组）、<code>tips</code>。
+    </div>
+
+    <div id="speaking-root">
+      <p class="muted">加载中…</p>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    English Study Buddy · 静态站骨架 · 用 GitHub Pages 托管
+  </footer>
+
+  <script src="assets/app.js"></script>
+  <script>
+    (async () => {
+      const root = document.getElementById("speaking-root");
+      try {
+        const topics = await loadJSON("data/speaking.json");
+        root.innerHTML = `<div class="item-list">${topics
+          .map(
+            (t) => `
+          <article class="item">
+            <div class="item-header">
+              <h3>${escapeHtml(t.titleZh || "")} · ${escapeHtml(t.title || "")}</h3>
+              <span class="badge badge-level">${escapeHtml(t.level || "")}</span>
+            </div>
+            <ol class="prompts">
+              ${(t.prompts || [])
+                .map((p) => `<li>${escapeHtml(p)}</li>`)
+                .join("")}
+            </ol>
+            ${
+              t.tips
+                ? `<div class="tip">💡 ${escapeHtml(t.tips)}</div>`
+                : ""
+            }
+          </article>`
+          )
+          .join("")}</div>`;
+      } catch (err) {
+        showFetchError(root, err);
+      }
+    })();
+  </script>
+</body>
+</html>

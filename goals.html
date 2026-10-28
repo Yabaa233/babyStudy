@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>目标打卡 · Goals</title>
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="index.html">
+        <span class="brand-title">英语学伴</span>
+        <span class="brand-sub">两人一起学英语</span>
+      </a>
+      <ul class="nav">
+        <li><a href="index.html" data-page="index.html">首页</a></li>
+        <li><a href="vocab.html" data-page="vocab.html">词汇本</a></li>
+        <li><a href="goals.html" data-page="goals.html">目标打卡</a></li>
+        <li><a href="writing.html" data-page="writing.html">作文互改</a></li>
+        <li><a href="speaking.html" data-page="speaking.html">口语话题</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main>
+    <h1 class="page-title">目标打卡 · Goals & Check-ins</h1>
+    <p class="page-lead">每周目标见 <code>data/goals.json</code>；打卡记录见 <code>data/checkins.json</code>。</p>
+
+    <div class="note">
+      打卡：在 <code>checkins.json</code> 追加
+      <code>{"date":"2026-10-28","partner":"A","note":"……"}</code>。
+      完成目标：把对应项的 <code>"done"</code> 改为 <code>true</code>。
+    </div>
+
+    <div id="goals-root">
+      <p class="muted">加载中…</p>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    English Study Buddy · 静态站骨架 · 用 GitHub Pages 托管
+  </footer>
+
+  <script src="assets/app.js"></script>
+  <script>
+    (async () => {
+      const root = document.getElementById("goals-root");
+      try {
+        const [config, goals, checkins] = await Promise.all([
+          loadConfig(),
+          loadJSON("data/goals.json"),
+          loadJSON("data/checkins.json"),
+        ]);
+
+        const partnerCards = (config.partners || [])
+          .map((p) => {
+            const items = (goals.partners && goals.partners[p.id]) || [];
+            const list = items
+              .map(
+                (g) => `
+              <li>
+                <span class="check ${g.done ? "done" : ""}" aria-hidden="true">${
+                  g.done ? "✓" : ""
+                }</span>
+                <span class="${g.done ? "done-text" : ""}">${escapeHtml(g.text)}</span>
+              </li>`
+              )
+              .join("");
+            return `
+              <article class="card">
+                <span class="partner-badge">${escapeHtml(p.nameZh || p.name)}</span>
+                <h3>${escapeHtml(p.name || "Partner " + p.id)}</h3>
+                <ul class="goal-list">${list || "<li class='muted'>暂无目标</li>"}</ul>
+              </article>`;
+          })
+          .join("");
+
+        const log = [...checkins]
+          .sort((a, b) => (b.date || "").localeCompare(a.date || ""))
+          .map(
+            (c) => `
+            <div class="checkin-item">
+              <div class="checkin-meta">
+                ${escapeHtml(formatDate(c.date))} · ${escapeHtml(
+              partnerName(config, c.partner)
+            )}
+              </div>
+              <div>${escapeHtml(c.note)}</div>
+            </div>`
+          )
+          .join("");
+
+        root.innerHTML = `
+          <div class="goal-banner">
+            <h2>本周 · Week of ${escapeHtml(goals.weekOf || "")}</h2>
+            <p>${escapeHtml(goals.shared || "")}</p>
+          </div>
+          <div class="card-grid">${partnerCards}</div>
+          <section class="section-gap">
+            <h2 style="font-size:1.1rem;margin:0 0 0.5rem;">打卡日志 · Check-ins</h2>
+            <div class="card">${log || '<p class="muted">暂无打卡</p>'}</div>
+          </section>`;
+      } catch (err) {
+        showFetchError(root, err);
+      }
+    })();
+  </script>
+</body>
+</html>

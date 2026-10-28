@@ -1,0 +1,22 @@
+{
+  "siteTitle": "English Study Buddy",
+  "siteTitleZh": "英语学伴",
+  "tagline": "两人一起学英语",
+  "partners": [
+    {
+      "id": "A",
+      "name": "Partner A",
+      "nameZh": "学伴 A",
+      "bio": "喜欢阅读和写作，目标是流利日常对话。",
+      "bioEn": "Loves reading and writing. Goal: fluent everyday conversation."
+    },
+    {
+      "id": "B",
+      "name": "Partner B",
+      "nameZh": "学伴 B",
+      "bio": "侧重听力和口语，想积累更多地道表达。",
+      "bioEn": "Focuses on listening & speaking. Wants more natural expressions."
+    }
+  ],
+  "weekGoal": "本周一起完成 20 个新词 + 1 篇短文互改 + 2 次口语练习"
+}
